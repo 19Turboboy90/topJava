@@ -21,10 +21,9 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String roleParameter = request.getParameter("numberUser");
-        if (roleParameter != null) {
-            int numberUser = Integer.parseInt(roleParameter);
+        String userId = request.getParameter("numberUser");
+        if (userId != null) {
+            int numberUser = Integer.parseInt(userId);
             log.info("user information {}", numberUser);
             SecurityUtil.setAuthUserId(numberUser);
             response.sendRedirect("meals");

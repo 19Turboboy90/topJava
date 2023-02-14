@@ -79,8 +79,8 @@ public class MealServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 LocalDate startDate = getDateRequest(request, "fromDate");
-                LocalTime startTime = getTimeRequest(request, "fromTime");
                 LocalDate endDate = getDateRequest(request, "toDate");
+                LocalTime startTime = getTimeRequest(request, "fromTime");
                 LocalTime endTime = getTimeRequest(request, "toTime");
                 request.setAttribute("meals", mealRestController.getAllFiltered(startDate, startTime, endDate, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);

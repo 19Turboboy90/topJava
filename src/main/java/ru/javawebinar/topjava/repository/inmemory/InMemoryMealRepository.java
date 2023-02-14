@@ -22,20 +22,19 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(meal -> save(meal, 1));
-        MealsUtil.meals.forEach(meal -> save(meal, 2));
+        MealsUtil.meals1.forEach(meal -> save(meal, 1));
+        MealsUtil.meals2.forEach(meal -> save(meal, 2));
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
         log.info("save {} userId={}", meal, userId);
-        Map<Integer, Meal> repositoryMeal = repository.computeIfAbsent(userId, unused -> new ConcurrentHashMap<>());
+        Map<Integer, Meal> repositoryMeal = repository.computeIfAbsent(userId, id -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repositoryMeal.put(meal.getId(), meal);
             return meal;
         }
-        // handle case: update, but not present in storage
         return repositoryMeal.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
@@ -43,14 +42,14 @@ public class InMemoryMealRepository implements MealRepository {
     public boolean delete(int id, int userId) {
         log.info("delete {} userId={}", id, userId);
         Map<Integer, Meal> repositoryMeal = repository.get(userId);
-        return repositoryMeal.remove(id) != null;
+        return repositoryMeal != null && repositoryMeal.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         log.info("get {} userId={}", id, userId);
         Map<Integer, Meal> repositoryMeal = repository.get(userId);
-        return repositoryMeal.get(id) != null ? repositoryMeal.get(id) : null;
+        return repositoryMeal != null ? repositoryMeal.get(id) : null;
     }
 
     @Override
@@ -66,7 +65,7 @@ public class InMemoryMealRepository implements MealRepository {
         return repositoryMeal == null
                 ? Collections.emptyList()
                 : repositoryMeal.values().stream()
-                .filter(meal -> isBetweenHalfOpen(meal.getDate(), start, finish))
+                .filter(meal -> isBetweenHalfOpen(meal.getDate(), start, finish == null ? null : finish.plusDays(1)))
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
