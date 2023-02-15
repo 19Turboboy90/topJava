@@ -62,10 +62,11 @@ public class InMemoryMealRepository implements MealRepository {
     public List<Meal> getAllFiltered(int userId, LocalDate start, LocalDate finish) {
         log.info("getAllFiltered");
         Map<Integer, Meal> repositoryMeal = repository.get(userId);
+        LocalDate end = finish == null ? null : finish.plusDays(1);
         return repositoryMeal == null
                 ? Collections.emptyList()
                 : repositoryMeal.values().stream()
-                .filter(meal -> isBetweenHalfOpen(meal.getDate(), start, finish == null ? null : finish.plusDays(1)))
+                .filter(meal -> isBetweenHalfOpen(meal.getDate(), start, end))
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
