@@ -21,28 +21,21 @@ public class MealTestDate {
 
     public static final int NOT_EXIST_ID = 10;
 
-    public static final Meal MEAL_1 =
-            new Meal(MEAL_ID1, LocalDateTime.of(2020, 1, 30, 10, 0), "Завтрак", 500);
-    public static final Meal MEAL_2 =
-            new Meal(MEAL_ID2, LocalDateTime.of(2020, 1, 30, 13, 0), "Обед", 1000);
-    public static final Meal MEAL_3 =
-            new Meal(MEAL_ID3, LocalDateTime.of(2020, 1, 30, 20, 0), "Ужин", 500);
-    public static final Meal MEAL_4 =
-            new Meal(MEAL_ID4, LocalDateTime.of(2020, 1, 31, 0, 0), "Еда на граничное значение", 100);
-    public static final Meal MEAL_5 =
-            new Meal(MEAL_ID5, LocalDateTime.of(2020, 1, 31, 10, 0), "Завтрак", 1000);
-    public static final Meal MEAL_6 =
-            new Meal(MEAL_ID6, LocalDateTime.of(2020, 1, 31, 13, 0), "Обед", 500);
-    public static final Meal MEAL_7 =
-            new Meal(MEAL_ID7, LocalDateTime.of(2020, 1, 31, 20, 0), "Ужин", 410);
+    public static final Meal meal1 = new Meal(MEAL_ID1, LocalDateTime.of(2020, 1, 30, 10, 0), "Завтрак", 500);
+    public static final Meal meal2 = new Meal(MEAL_ID2, LocalDateTime.of(2020, 1, 30, 13, 0), "Обед", 1000);
+    public static final Meal meal3 = new Meal(MEAL_ID3, LocalDateTime.of(2020, 1, 30, 20, 0), "Ужин", 500);
+    public static final Meal meal4 = new Meal(MEAL_ID4, LocalDateTime.of(2020, 1, 31, 0, 0), "Еда на граничное значение", 100);
+    public static final Meal meal5 = new Meal(MEAL_ID5, LocalDateTime.of(2020, 1, 31, 10, 0), "Завтрак", 1000);
+    public static final Meal meal6 = new Meal(MEAL_ID6, LocalDateTime.of(2020, 1, 31, 13, 0), "Обед", 1000);
+    public static final Meal meal7 = new Meal(MEAL_ID7, LocalDateTime.of(2020, 1, 31, 20, 0), "Ужин", 500);
 
 
-    public static Meal getNewMeal() {
+    public static Meal getNew() {
         return new Meal(null, LocalDateTime.of(2020, 1, 1, 0, 0), "newMeal", 0);
     }
 
-    public static Meal getUpdatedMeal() {
-        Meal updated = new Meal(MEAL_1);
+    public static Meal getUpdated() {
+        Meal updated = new Meal(meal1);
         updated.setDateTime(LocalDateTime.of(2023, 12, 2, 4, 0));
         updated.setDescription("updateDescription");
         updated.setCalories(10);
