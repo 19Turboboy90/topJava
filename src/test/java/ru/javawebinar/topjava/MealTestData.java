@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 
-public class MealTestDate {
+public class MealTestData {
 
     public static final int MEAL_ID1 = START_SEQ + 3;
     public static final int MEAL_ID2 = START_SEQ + 4;
