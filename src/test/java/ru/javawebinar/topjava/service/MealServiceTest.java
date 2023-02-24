@@ -70,13 +70,13 @@ public class MealServiceTest {
     public void getBetweenInclusive() {
         List<Meal> meals = service.getBetweenInclusive(LocalDate.of(2020, 1, 30),
                 LocalDate.of(2020, 1, 30), USER_ID);
-        assertMatch(meals, meal4, meal3, meal2, meal1);
+        assertMatch(meals, meal3, meal2, meal1);
     }
 
     @Test
     public void filteringBoundariesAreNotSet() {
         List<Meal> meals = service.getBetweenInclusive(null, LocalDate.of(2020, 1, 30), USER_ID);
-        assertMatch(meals, meal4, meal3, meal2, meal1);
+        assertMatch(meals, meal3, meal2, meal1);
     }
 
     @Test
@@ -94,8 +94,7 @@ public class MealServiceTest {
 
     @Test
     public void updateSomeoneElseMeal() {
-        Meal updateMeal = service.create(getNew(), USER_ID);
-        assertThrows(NotFoundException.class, () -> service.update(updateMeal, ADMIN_ID));
+        assertThrows(NotFoundException.class, () -> service.update(getUpdated(), ADMIN_ID));
     }
 
     @Test
