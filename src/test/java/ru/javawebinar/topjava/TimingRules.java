@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.util;
+package ru.javawebinar.topjava;
 
 import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
@@ -6,7 +6,9 @@ import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
 //https://korelyakov.com/blog/how-to-add-execution-time-in-junit-tests/
 public class TimingRules {
     private static final Logger log = LoggerFactory.getLogger("result");
@@ -22,7 +24,7 @@ public class TimingRules {
         }
     };
 
-    private static final String DELIM = "-".repeat(103);
+    private static final String DELIM = String.join("", Collections.nCopies(103, "-"));
 
     public static final ExternalResource SUMMARY = new ExternalResource() {
 

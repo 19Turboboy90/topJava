@@ -18,23 +18,23 @@ import java.time.LocalTime;
 })
 
 @Entity
-@Table(name = "meal")
+@Table(name = "meal", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meal_unique_user_datetime_idx"))
 public class Meal extends AbstractBaseEntity {
 
     public static final String DELETE = "Meal.delete";
     public static final String ALL_SORTED = "Meal.getAllSorted";
-    public static final String BETWEEN_HALF_OPEN = "Meal. getBetweenHalfOpen";
+    public static final String BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
 
     @NotNull
-    @Column(name = "date_time", nullable = false, unique = true)
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 5, max = 150)
     private String description;
 
-    @Column(name = "calories")
+    @Column(name = "calories", nullable = false)
     @Range(min = 10, max = 10000)
     private int calories;
 
