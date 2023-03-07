@@ -48,7 +48,5 @@ public class UserTestData {
                 MealTestData.meal2,
                 MealTestData.meal1
         ));
-
-        guest.setMeals(List.of());
     }
 }

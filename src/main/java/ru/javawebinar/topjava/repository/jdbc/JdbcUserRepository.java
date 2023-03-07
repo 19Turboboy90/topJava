@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.repository.jdbc.user;
+package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
