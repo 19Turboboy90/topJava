@@ -40,8 +40,8 @@ public class DataJpaMealRepository implements MealRepository {
                 .filter(meal -> meal.getUser().getId() == userId).orElse(null);
     }
 
-    public Meal getMealByIdWithUser(int id, int userId) {
-        return mealRepository.getMealByIdWithUser(id, userId);
+    public Meal getByIdWithUser(int id, int userId) {
+        return mealRepository.getByIdWithUser(id, userId);
     }
 
     @Override
