@@ -13,7 +13,7 @@ import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 @ActiveProfiles(profiles = Profiles.DATAJPA)
-public class DataJpaMealTest extends AbstractMealServiceTest {
+public class DataJpaMealServiceTest extends AbstractMealServiceTest {
     @Test
     public void getMealByIdWithUser() {
         Meal meal = service.getMealByIdWithUser(ADMIN_MEAL_ID, ADMIN_ID);

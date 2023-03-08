@@ -22,6 +22,6 @@ public interface MealRepository {
     List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
 
     default Meal getMealByIdWithUser(int id, int userId) {
-        throw new UnsupportedOperationException("exception in the getMealByIdWithUse method");
+        throw new UnsupportedOperationException("the getMealByIdWithUser method is not implemented");
     }
 }
