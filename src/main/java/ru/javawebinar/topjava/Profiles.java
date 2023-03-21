@@ -8,7 +8,8 @@ public class Profiles {
             JPA = "jpa",
             DATAJPA = "datajpa";
 
-    public static final String REPOSITORY_IMPLEMENTATION = DATAJPA;
+    public static final String REPOSITORY_IMPLEMENTATION = JDBC;
+    public static final String NO_CACHE = "nocache";
 
     public static final String
             POSTGRES_DB = "postgres",
