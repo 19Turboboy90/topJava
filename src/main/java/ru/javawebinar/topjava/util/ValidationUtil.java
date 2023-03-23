@@ -58,7 +58,7 @@ public class ValidationUtil {
         return rootCause != null ? rootCause : t;
     }
 
-    public static <T> void validationsBean(Validator validator, T t) {
+    public static <T> void validateBean (Validator validator, T t) {
         Set<ConstraintViolation<T>> violations = validator.validate(t);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException("Save + " + t + " - validation errors", violations);

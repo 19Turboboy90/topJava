@@ -40,7 +40,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
-        ValidationUtil.validationsBean(validator, user);
+        ValidationUtil.validateBean(validator, user);
 
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
@@ -60,11 +60,11 @@ public class JdbcUserRepository implements UserRepository {
         return user;
     }
 
-    private void saveUserRoles(User user, int newId) {
+    private void saveUserRoles(User user, int userId) {
         Set<Role> roles = user.getRoles();
         if (!roles.isEmpty()) {
             jdbcTemplate.batchUpdate("INSERT INTO user_role (user_id, role) VALUES (?,?)", roles, roles.size(), (ps, role) -> {
-                ps.setInt(1, newId);
+                ps.setInt(1, userId);
                 ps.setString(2, role.name());
             });
         }
@@ -98,7 +98,6 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> getAll() {
-
         List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
 
         Map<Integer, Set<Role>> map = new HashMap<>();

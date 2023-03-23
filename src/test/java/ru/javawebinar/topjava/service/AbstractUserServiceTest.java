@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -14,10 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertThrows;
-import static ru.javawebinar.topjava.Profiles.NO_CACHE;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ActiveProfiles(NO_CACHE)
 public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
@@ -76,8 +73,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void getAll() {
-        List<User> userAll = service.getAll();
-        USER_MATCHER.assertMatch(userAll, admin, guest, user);
+        List<User> allUsers = service.getAll();
+        USER_MATCHER.assertMatch(allUsers, admin, guest, user);
     }
 
     @Test
