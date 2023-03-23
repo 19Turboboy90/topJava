@@ -3,12 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
-<head>
-    <title>Meals</title>
-    <link rel="stylesheet" href="<spring:url value="/resources/css/style.css"/>">
-</head>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>

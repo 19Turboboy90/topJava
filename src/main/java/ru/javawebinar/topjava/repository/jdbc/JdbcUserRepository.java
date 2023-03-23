@@ -4,22 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 @Repository
@@ -45,10 +40,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException("Save user - validation errors", violations);
-        }
+        ValidationUtil.validationsBean(validator, user);
 
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
@@ -86,57 +78,35 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User get(int id) {
-        return queryRolesForUser(jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id));
+        return queryRolesForUser(
+                DataAccessUtils.singleResult(jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id)));
     }
 
-    private User queryRolesForUser(List<User> users) {
-        User user = DataAccessUtils.singleResult(users);
-        if (user == null) {
-            return null;
+    private User queryRolesForUser(User user) {
+        if (user != null) {
+            List<Role> roles = jdbcTemplate.queryForList("SELECT role FROM user_role WHERE user_id=?", Role.class, user.getId());
+            user.setRoles(roles);
         }
-        List<String> roles = jdbcTemplate.queryForList("SELECT role FROM user_role WHERE user_id=?", String.class, user.id());
-        user.setRoles(roles.stream().map(Role::valueOf).toList());
         return user;
     }
 
     @Override
     public User getByEmail(String email) {
-        return queryRolesForUser(jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email));
+        return queryRolesForUser(
+                DataAccessUtils.singleResult(jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email)));
     }
 
     @Override
     public List<User> getAll() {
-        List<User> users = jdbcTemplate.query("SELECT us.*, ur.role FROM users AS us "
-                + "LEFT JOIN user_role AS ur ON us.id = ur.user_id "
-                + "ORDER BY name, email", new UserWithRolesRowMapper());
-        return users.stream().distinct().toList();
-    }
 
-    private static class UserWithRolesRowMapper implements RowMapper<User> {
+        List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
 
-        private final Map<Integer, User> usersMap = new HashMap<>();
-
-        @Override
-        public User mapRow(@Nullable ResultSet rs, int rowNum) throws SQLException {
-            Objects.requireNonNull(rs);
-            User user = Objects.requireNonNull(ROW_MAPPER.mapRow(rs, rowNum));
-
-            String roleValue = rs.getString("role");
-            if (roleValue != null && !roleValue.isEmpty()) {
-                user.setRoles(List.of(Role.valueOf(roleValue)));
-            } else {
-                user.setRoles(List.of());
-            }
-
-            user = usersMap.merge(user.id(), user, (oldUser, newUser) -> {
-                Role role = newUser.getRoles().iterator().next();
-                if (role != null) {
-                    oldUser.getRoles().add(role);
-                }
-                return oldUser;
-            });
-
-            return user;
-        }
+        Map<Integer, Set<Role>> map = new HashMap<>();
+        jdbcTemplate.query("SELECT * FROM user_role", rs -> {
+            map.computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
+                    .add(Role.valueOf(rs.getString("role")));
+        });
+        users.forEach(u -> u.setRoles(map.get(u.getId())));
+        return users;
     }
 }

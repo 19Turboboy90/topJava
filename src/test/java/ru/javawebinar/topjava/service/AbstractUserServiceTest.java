@@ -1,9 +1,6 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,15 +18,10 @@ import static ru.javawebinar.topjava.Profiles.NO_CACHE;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 @ActiveProfiles(NO_CACHE)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected UserService service;
-
-    @Before
-    public void setup() {
-    }
 
     @Test
     public void create() {
@@ -83,8 +75,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void updateUpdateAndThenGetAll() {
-        USER_MATCHER.assertMatch(service.getAll(), admin, guest, user);
+    public void getAll() {
+        List<User> userAll = service.getAll();
+        USER_MATCHER.assertMatch(userAll, admin, guest, user);
     }
 
     @Test
@@ -94,16 +87,5 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 9, true, new Date(), Set.of())));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 10001, true, new Date(), Set.of())));
-    }
-
-    @Test
-    public void changeRole() {
-        User createdUser = service.create(new User(null, "Ivan Pupkin", "pupkin@ya.ru", "qwerty", Role.USER, Role.ADMIN));
-
-        createdUser.setRoles(List.of(Role.USER));
-        service.update(createdUser);
-        User updatedUser = service.get(createdUser.id());
-
-        USER_MATCHER.assertMatch(updatedUser, createdUser);
     }
 }

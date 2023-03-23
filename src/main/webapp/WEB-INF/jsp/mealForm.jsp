@@ -4,15 +4,13 @@
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
-<head>
-    <title><spring:message code="meal.meal"/></title>
-    <link rel="stylesheet" href="<spring:url value="/resources/css/style.css"/>">
-</head>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
+    <h2>
+        <spring:message code="${meal.isNew() ? 'meal.addmeal' : 'meal.editmeal'}"/>
+    </h2>
     <form method="post" action="<spring:url value="/meals"/>">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>

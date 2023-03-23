@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:cache="http://www.springframework.org/schema/cache"
-       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-         http://www.springframework.org/schema/beans/spring-beans.xsd
-         http://www.springframework.org/schema/cache
-         http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-    <beans profile="!jdbc">
-        <beans profile="nocache">
-            <context:property-override location="classpath:bd/nocache.properties"/>
-            <cache:annotation-driven cache-manager="ehCacheManager"/>
-            <bean id="ehCacheManager" class="org.springframework.cache.support.NoOpCacheManager"/>
-        </beans>
+    <cache:annotation-driven cache-manager="noOpCacheManager"/>
+
+    <bean id="noOpCacheManager" class="org.springframework.cache.support.NoOpCacheManager"/>
+
+    <beans profile="datajpa, jpa">
+        <util:properties id="hibernateSecondLevelCache">
+            <prop key="entityManagerFactory.jpaPropertyMap[hibernate.cache.use_second_level_cache]">">false</prop>
+        </util:properties>
     </beans>
 </beans>
