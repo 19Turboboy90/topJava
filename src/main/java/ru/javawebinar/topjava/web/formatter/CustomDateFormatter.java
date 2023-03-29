@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.util.formatter;
+package ru.javawebinar.topjava.web.formatter;
 
 import org.springframework.format.Formatter;
 
@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class CustomDateFormatter implements Formatter<LocalDate> {
+public final class CustomDateFormatter implements Formatter<LocalDate> {
     @Override
     public LocalDate parse(String text, Locale locale) throws ParseException {
         return LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
