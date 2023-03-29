@@ -1,30 +1,26 @@
 ### Get All Meals
-> `curl` http://localhost:8080/topjava/rest/meals 
+> curl http://localhost:8080/topjava/rest/meals 
 
 -----
 ### Get Meal by ID
-> `curl` http://localhost:8080/topjava/rest/meals/100003
+> curl http://localhost:8080/topjava/rest/meals/100003
 
 -----
 ### Delete Meal by ID
-> `curl` http://localhost:8080/topjava/rest/meals/100013
+> curl -X DELETE http://localhost:8080/topjava/rest/meals/100012
 
 -----
 ### Create Meal
-> `curl` http://localhost:8080/topjava/rest/meals 
-
-{"dateTime": "2023-03-28T17:00","description": "яблочко","calories": 100}
+> curl -X POST -d {"dateTime":"2023-03-28T17:00","description":"сыр","calories":150} -H 'Content-Type: application/json' http://localhost:8080/topjava/rest/meals  
 
 -----
 ### Update Meal
-> `curl` http://localhost:8080/topjava/rest/meals/100003
-
-{"dateTime": "2020-01-30T10:00:00","description": "Завтрак","calories": 1500}
+> curl -s -X PUT -d {"dateTime": "2020-01-30T10:00:00","description": "Завтрак","calories": 1500} -H 'Content-Type: application/json' http://localhost:8080/topjava/rest/meals/100003
 
 -----
 ### Filtered Meal by starting date
-> `curl` http://localhost:8080/topjava/rest/meals/filter?startDate=2020-01-31
+> curl http://localhost:8080/topjava/rest/meals/filter?startDate=2020-01-31
 
 -----
 ### Filtered Meals by all parameters
-> `curl` http://localhost:8080/topjava/rest/meals/filter?startDate=2020-01-31&startTime=10:00&endDate=2020-01-31&endTime=20:00
+> curl http://localhost:8080/topjava/rest/meals/filter?startDate=2020-01-31&startTime=10:00&endDate=2020-01-31&endTime=20:00

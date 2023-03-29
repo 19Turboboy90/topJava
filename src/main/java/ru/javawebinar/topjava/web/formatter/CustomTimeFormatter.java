@@ -7,9 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public final class CustomTimeFormatter implements Formatter<LocalTime> {
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+
     @Override
     public LocalTime parse(String text, Locale locale) {
-        return LocalTime.parse(text, DateTimeFormatter.ofPattern("HH:mm"));
+        return LocalTime.parse(text, TIME_FORMATTER);
     }
 
     @Override
