@@ -5,6 +5,23 @@ const ctx = {
     ajaxUrl: userAjaxUrl
 };
 
+function enable(checkbox) {
+    let enabled = $(checkbox).closest('tr');
+    $.ajax({
+        type: "PATCH",
+        url: ctx.ajaxUrl + enabled.attr("id") + '/enabled?enabled=' + checkbox.checked
+    })
+        .done(function () {
+            successNoty("User " + (checkbox.checked ? 'enabled' : 'disabled'));
+        })
+        .fail(function () {
+            checkbox.checked = !checkbox.checked;
+        })
+        .always(function () {
+            enabled.attr("data-user-enabled", checkbox.checked);
+        });
+}
+
 // $(document).ready(function () {
 $(function () {
     makeEditable(
