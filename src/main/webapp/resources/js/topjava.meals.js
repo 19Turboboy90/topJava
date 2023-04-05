@@ -53,14 +53,3 @@ $(function () {
         })
     );
 });
-
-$(function () {
-    $('#filterDetails');
-
-    $('#datetimepicker').datetimepicker({
-        format: 'd.m.Y H:i',
-        closeOnDateSelect: true,
-    })
-});
-
-
