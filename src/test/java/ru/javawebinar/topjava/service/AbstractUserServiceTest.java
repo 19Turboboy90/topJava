@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -91,6 +91,6 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     void enabled() {
         service.enabled(false, USER_ID);
 
-        assertThat(service.get(USER_ID).isEnabled()).isEqualTo(false);
+        assertFalse(service.get(USER_ID).isEnabled());
     }
 }
